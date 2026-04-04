@@ -109,6 +109,16 @@ A100_CANDIDATE_4 = {
     "optim": "adamw_torch",
 }
 
+A100_CANDIDATE_5 = {
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 10,
+    "learning_rate": 4e-4,
+    "lr_scheduler_type": "linear",
+    "warmup_steps": 0,
+    "torch_compile": False,
+    "optim": "adamw_torch",
+}
+
 
 PROMPTS_FOR_GENERATION = [
     "Москва — это",
@@ -116,8 +126,8 @@ PROMPTS_FOR_GENERATION = [
     "В будущем искусственный интеллект будет",
 ]
 
-FINAL_CANDIDATE = A100_CANDIDATE_4
-FINAL_RUN_NAME = "a100-candidate-4-lr4e-4-warmup0"
+FINAL_CANDIDATE = A100_CANDIDATE_5
+FINAL_RUN_NAME = "a100-candidate-5-lr4e-4-warmup0-acc10"
 
 
 class TimeoutCallback(TrainerCallback):
