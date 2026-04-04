@@ -1,0 +1,9 @@
+output_dir/
+tokenized_data/
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.env
+*.pyc
+*.pyo
+.DS_Store

@@ -1,0 +1,7 @@
+transformers==4.52.0
+datasets==3.6.0
+wandb==0.19.10
+accelerate==1.6.0
+flash-attn==2.7.3
+sentencepiece
+pyarrow
