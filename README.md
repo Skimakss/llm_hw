@@ -154,23 +154,6 @@ D = 1{,}940{,}063 \cdot 512 = 993{,}312{,}256 \approx 10^9
 ---
 
 
-## Предварительный shortlist конфигов перед финальным запуском
-
-После серии Kaggle smoke-тестов был подготовлен shortlist кандидатов для финального запуска на **1×A100**.
-
-В качестве рабочей основы переносились следующие решения:
-
-- `optim = "adamw_torch"`
-- `torch_compile = False`
-- `learning_rate = 5e-5` как надежный базовый кандидат
-- `lr_scheduler_type = "constant"` как рабочий вариант для коротких прогонов
-
-При выборе batch size учитывалось, что важен не только `per_device_train_batch_size`, а **effective batch size**:
-
-`effective_batch = per_device_train_batch_size * num_gpus * gradient_accumulation_steps`
-
-Так как финальный запуск выполнялся на одной GPU, effective batch size достигался комбинацией `per_device_train_batch_size` и `gradient_accumulation_steps`.
-
 ## Этап 2. Финальные эксперименты на A100 SXM 80GB
 
 После отладки на Kaggle эксперименты были перенесены на удалённую машину с **GPU A100 SXM 80GB**, где выполнялись финальные 30-минутные прогоны.
