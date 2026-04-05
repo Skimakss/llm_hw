@@ -120,7 +120,7 @@
 
 ## Оценка стартовых значений effective batch size и learning rate
 
-Перед подготовкой кандидатов для запуска на A100 начальные значения effective batch size и learning rate оценивались по формулам:
+Перед подготовкой кандидатов для запуска на A100 начальные значения effective batch size и learning rate оценивались по формулам из статьи https://arxiv.org/pdf/2503.04715:
 
 \[
 \eta(N, D) = 1.79 N^{-0.713} D^{0.307}
