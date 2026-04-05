@@ -120,7 +120,7 @@
 
 ## Оценка стартовых значений effective batch size и learning rate
 
-Перед подготовкой кандидатов `A100_CANDIDATE_1`, `A100_CANDIDATE_2`, `A100_CANDIDATE_3` были оценены стартовые значения effective batch size и learning rate по эвристическим формулам из статьи https://arxiv.org/pdf/2503.04715:
+Перед подготовкой кандидатов для запуска на A100 начальные значения effective batch size и learning rate оценивались по формулам:
 
 \[
 \eta(N, D) = 1.79 N^{-0.713} D^{0.307}
@@ -130,75 +130,29 @@
 B(D) = 0.58 D^{0.571}
 \]
 
-Здесь:
-
-- \(N\) — размер модели в параметрах;
-- \(D\) — общее число токенов в обучающем корпусе.
-
-В данной работе размер модели оценивался как:
-
-\[
-N \approx 10^9
-\]
-
-Число токенов в train-части корпуса оценивалось по формуле:
-
-\[
-D = M \cdot L
-\]
-
 где:
 
+- \(N \approx 10^9\) — размер модели;
+- \(D = M \cdot L\) — число токенов в train-корпусе;
 - \(M = 1{,}940{,}063\) — число объектов в train;
-- \(L = 512\) — длина одного объекта после токенизации, padding и truncation.
+- \(L = 512\) — длина одного объекта после токенизации и padding.
 
-Тогда:
-
-\[
-D = 1{,}940{,}063 \cdot 512 = 993{,}312{,}256 \approx 9.93 \cdot 10^8
-\]
-
-То есть общий объём обучающего корпуса составляет примерно **\(10^9\) токенов**.
-
-Подстановка этого значения в формулу для batch size дает:
+Отсюда:
 
 \[
-B_{\text{tok}} = 0.58 \cdot D^{0.571} \approx 79{,}573
+D = 1{,}940{,}063 \cdot 512 = 993{,}312{,}256 \approx 10^9
 \]
 
-Таким образом, рекомендуемый effective batch size составляет примерно **\(8 \cdot 10^4\) токенов**.
+Оценки дали:
 
-Так как в экспериментах использовалась фиксированная длина последовательности `512`, batch size в объектах оценивался как:
+- **effective batch size:** около **80 000 токенов**
+- **effective batch size в объектах:** около **156**, то есть ориентир **150–160 объектов**
+- **learning rate:** около **`4e-4`**
 
-\[
-B_{\text{obj}} = \frac{B_{\text{tok}}}{512} \approx \frac{79{,}573}{512} \approx 155.4
-\]
-
-После округления это дало ориентир **150–160 объектов** для effective batch size.
-
-Аналогично для learning rate:
-
-\[
-\eta(N, D) = 1.79 \cdot (10^9)^{-0.713} \cdot (993{,}312{,}256)^{0.307} \approx 3.96 \cdot 10^{-4}
-\]
-
-Это значение было округлено до практического стартового ориентира:
-
-\[
-\eta \approx 4 \cdot 10^{-4}
-\]
-
-Именно поэтому при подготовке финальных конфигов для запуска на A100 в качестве разумной стартовой точки рассматривались:
-
-- effective batch size порядка **150–160 объектов**;
-- learning rate порядка **\(4 \cdot 10^{-4}\)**.
-
-Эти оценки использовались не как жестко фиксированные значения, а как ориентир для конструирования первых кандидатных конфигураций. В частности, отсюда появились варианты с effective batch size около `160`, например:
-
-- `per_device_train_batch_size = 8`, `gradient_accumulation_steps = 20`;
-- `per_device_train_batch_size = 16`, `gradient_accumulation_steps = 10`.
+Эти значения использовались как стартовая эвристика при подготовке кандидатных конфигураций для A100.
 
 ---
+
 
 ## Предварительный shortlist конфигов перед финальным запуском
 
@@ -216,42 +170,6 @@ B_{\text{obj}} = \frac{B_{\text{tok}}}{512} \approx \frac{79{,}573}{512} \approx
 `effective_batch = per_device_train_batch_size * num_gpus * gradient_accumulation_steps`
 
 Так как финальный запуск выполнялся на одной GPU, effective batch size достигался комбинацией `per_device_train_batch_size` и `gradient_accumulation_steps`.
-
-Рассматривались следующие кандидаты:
-
-```python
-A100_CANDIDATE_1 = {
-    "per_device_train_batch_size": 8,
-    "gradient_accumulation_steps": 20,
-    "learning_rate": 5e-5,
-    "lr_scheduler_type": "constant",
-    "warmup_steps": 200,
-    "torch_compile": False,
-    "optim": "adamw_torch",
-}
-
-A100_CANDIDATE_2 = {
-    "per_device_train_batch_size": 16,
-    "gradient_accumulation_steps": 10,
-    "learning_rate": 5e-5,
-    "lr_scheduler_type": "constant",
-    "warmup_steps": 200,
-    "torch_compile": False,
-    "optim": "adamw_torch",
-}
-
-A100_CANDIDATE_3 = {
-    "per_device_train_batch_size": 8,
-    "gradient_accumulation_steps": 20,
-    "learning_rate": 1e-4,
-    "lr_scheduler_type": "constant",
-    "warmup_steps": 200,
-    "torch_compile": False,
-    "optim": "adamw_torch",
-}
-```
-
----
 
 ## Этап 2. Финальные эксперименты на A100 SXM 80GB
 
