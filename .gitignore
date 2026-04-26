@@ -1,10 +1,46 @@
-output_dir/
-tokenized_data/
+# Python
 __pycache__/
-.ipynb_checkpoints/
+*.py[cod]
+*.so
 .venv/
+venv/
+env/
 .env
-*.pyc
-*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / IDE
 .DS_Store
-tokenized_data.tar.gz
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+wandb/
+mlruns/
+outputs/
+runs/
+
+# Data / models / checkpoints
+data/
+datasets/
+checkpoints/
+checkpoint-*/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.parquet
+*.arrow
+
+# Hugging Face / caches
+.cache/
+hf_cache/
+huggingface/
+
+# Local materials
+presintations/
+prompt/

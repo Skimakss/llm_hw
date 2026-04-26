@@ -1,0 +1,9 @@
+run_name,model_name,num_epochs,learning_rate,batch_size,grad_accum_steps,packing,torch_dtype,dataset_name,max_seq_length
+baseline_bf16_packing_false,Qwen/Qwen2.5-0.5B-Instruct,1,1e-05,1,4,False,bf16,databricks/databricks-dolly-15k,512
+baseline_bf16_packing_true,Qwen/Qwen2.5-0.5B-Instruct,1,1e-05,1,4,True,bf16,databricks/databricks-dolly-15k,512
+grid6_run1_ep1_lr5e-06_bs1_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,5e-06,1,4,False,bf16,databricks/databricks-dolly-15k,512
+grid6_run2_ep1_lr1e-05_bs1_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,1e-05,1,4,False,bf16,databricks/databricks-dolly-15k,512
+grid6_run3_ep1_lr2e-05_bs1_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,2e-05,1,4,False,bf16,databricks/databricks-dolly-15k,512
+grid6_run4_ep1_lr5e-06_bs2_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,5e-06,2,4,False,bf16,databricks/databricks-dolly-15k,512
+grid6_run5_ep1_lr1e-05_bs2_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,1e-05,2,4,False,bf16,databricks/databricks-dolly-15k,512
+grid6_run6_ep1_lr2e-05_bs2_bf16_packFalse,Qwen/Qwen2.5-0.5B-Instruct,1,2e-05,2,4,False,bf16,databricks/databricks-dolly-15k,512
